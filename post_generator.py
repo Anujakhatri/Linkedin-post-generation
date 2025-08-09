@@ -55,5 +55,5 @@ def get_prompt(length, language, tag):
 
 
 if __name__ == "__main__":
-    #post=get_prompt('short','English', 'Job Search')
+    
     print(generate_post("Medium", "English", "Mental Health"))
