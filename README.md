@@ -7,8 +7,14 @@ The major purpose is to investigate LLM principles and the processes behind gene
  The libraries that you required to install before run the project.
 
 streamlit
+
 langchain
+
 langchain-core
+
 langchain-community
+
 langchain_groq
+
 pandas
+
