@@ -4,13 +4,13 @@ from post_generator import generate_post
 
 
 # Options for length and language
-length_options = ["Short", "Medium", "Long"]
-language_options = ["English", "Neplish"]
+length_options = ["Short" , "Medium", "Long"]
+language_options = ["English" , "Neplish"]
 
 
 # Main app layout
 def main():
-    st.subheader("LinkedIn Post Generator: Codebasics")
+    st.subheader(" LinkedIn Post Generator : Codebasics ")
 
     # Create three columns for the dropdowns
     col1, col2, col3 = st.columns(3)
@@ -35,8 +35,8 @@ def main():
     if st.button("Generate"):
         post = generate_post(selected_length, selected_language, selected_tag)
         st.write(post)
-
-
+        
 # Run the app
 if __name__ == "__main__":
     main()
+    
