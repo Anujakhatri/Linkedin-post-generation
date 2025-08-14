@@ -48,10 +48,10 @@ def get_prompt(length, language, tag):
 
     return prompt
 
-# def generate_post(length, language, tag):
-#     prompt= get_prompt(length,language,tag)
-#     response=llm.invoke(prompt)
-#     return response.content
+def generate_post(length, language, tag):
+    prompt= get_prompt(length,language,tag)
+    response=llm.invoke(prompt)
+    return response.content
 
 
 if __name__ == "__main__":
