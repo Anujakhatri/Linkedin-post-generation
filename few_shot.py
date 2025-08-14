@@ -3,7 +3,7 @@ import json
 
 
 class FewShotPosts:
-    def __init__(self, file_path="data/processed_posts.json"):
+    def __init__(self, file_path = "data/processed_posts.json"):
         self.df = None
         self.unique_tags = None
         self.load_posts(file_path)
@@ -39,6 +39,5 @@ class FewShotPosts:
 
 if __name__ == "__main__":
     fs = FewShotPosts()
-    # print(fs.get_tags())
-    posts = fs.get_filtered_posts("Medium","Neplish","Job Search")
+    posts = fs.get_filtered_posts("Medium", "Neplish", "Job Search")
     print(posts)
