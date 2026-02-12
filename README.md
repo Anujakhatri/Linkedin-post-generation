@@ -1,240 +1,284 @@
-**LinkedIn Post Generator**
+# 🚀 LinkedIn Post Generator (Few-Shot LLM)
 
-Generate engaging LinkedIn posts using a few-shot LLM prompt, with a simple web UI for choosing topic, length, and language.
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.0+-red.svg)
+![LangChain](https://img.shields.io/badge/LangChain-Enabled-green.svg)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## Description
+> An intelligent LinkedIn post generator powered by few-shot learning and large language models. Create engaging, professional LinkedIn content tailored to your topic, length, and language preferences.
 
-This project helps you quickly create LinkedIn posts based on real example posts and an LLM (Groq + Llama 3.3).  
-Raw LinkedIn posts are first enriched with metadata (line count, language, tags) and stored in a processed dataset.  
-At runtime, the app:
+---
 
-- Loads processed example posts.
-- Filters them by your chosen topic, length, and language.
-- Builds a prompt with up to two similar examples.
-- Sends the prompt to an LLM to generate a new post.
+## 📋 Project Overview
 
-The current UI is implemented in Python using Streamlit, and the LLM integration uses LangChain with Groq.
+The **LinkedIn Post Generator** is an AI-powered application that generates high-quality LinkedIn posts using a few-shot prompting approach. By leveraging real LinkedIn post examples enriched with metadata, the system intelligently selects similar posts and uses them as context to generate new, engaging content through the Llama 3.3 model via Groq API.
 
-## Features / Key Functionalities
+This project demonstrates practical applications of:
+- **Few-shot learning** for content generation
+- **Metadata-driven filtering** for context-aware AI responses
+- **Modern LLM orchestration** using LangChain
+- **Interactive web interfaces** with Streamlit
 
-- **Interactive web UI (Streamlit)**
-  - Dropdowns for:
-    - **Topic**: choose from tags extracted from your dataset.
-    - **Length**: `Short`, `Medium`, or `Long`.
-    - **Language**: `English` or `Neplish` (mix of Nepali + English, but always written in Latin script).
-  - One-click **Generate** button to produce a new LinkedIn post.
+---
 
-- **LLM-powered post generation**
-  - Uses **Groq** (`llama-3.3-70b-versatile` via `langchain_groq.ChatGroq`).
-  - Builds a structured prompt with clear instructions and a few example posts.
-  - Returns only the generated post text (no preamble).
+## ✨ Features
 
-- **Few-shot example selection**
-  - `FewShotPosts` class (in `few_shot.py`) loads `data/processed_posts.json`.
-  - Normalizes JSON into a Pandas DataFrame.
-  - Categorizes post length into `Short`, `Medium`, and `Long`.
-  - Filters examples by:
-    - Selected **tag** (topic).
-    - Selected **language**.
-    - Selected **length**.
+- 🎯 **Topic-Based Generation**: Select from predefined topics to generate relevant content
+- 📏 **Customizable Length**: Choose between short, medium, or long post formats
+- 🌍 **Multi-Language Support**: Generate posts in different languages
+- 🧠 **Few-Shot Learning**: Uses real LinkedIn post examples to guide AI generation
+- 🎨 **Interactive UI**: Clean, user-friendly Streamlit interface
+- ⚡ **Fast Processing**: Powered by Groq's high-performance API
+- 🔍 **Smart Filtering**: Metadata-based example selection for better context
 
-- **Data preprocessing pipeline**
-  - `preprocess.py` reads `data/raw_posts.json` and:
-    - Sanitizes Unicode artifacts.
-    - Uses an LLM to extract:
-      - `line_count`
-      - `language`
-      - `tags` (up to 2 per post)
-    - Unifies similar tags (e.g., `"Jobseekers"` and `"Job Hunting"` → `"Job Search"`).
-    - Writes enriched posts to `data/processed_posts.json`.
+---
 
-- **Environment-based configuration**
-  - Uses `.env.save` for storing `GROQ_API_KEY`.
-  - All LLM calls go through `llm_helper.py`, making it easier to swap models/providers later.
+## 🧠 How It Works
 
-## Installation Instructions
+The application follows a sophisticated pipeline to generate contextually relevant LinkedIn posts:
 
-### 1. Prerequisites
+### 1️⃣ **Data Collection & Enrichment**
+- Raw LinkedIn posts are collected and stored
+- Each post is enriched with metadata:
+  - **Line count**: Determines post length category
+  - **Language**: Identifies the language of the post
+  - **Tags**: Categorizes posts by topic/theme
 
-- **Python**: 3.10+ (3.12 is used in the current virtual environment).
-- **pip** or another Python package manager.
-- **Groq account & API key** for `GROQ_API_KEY`.
+### 2️⃣ **Preprocessing & Storage**
+- Enriched posts are processed and stored in a structured format
+- Metadata enables efficient filtering and retrieval
 
-> Note: The repository includes a `.venv` directory, but you can create your own virtual environment instead of using the committed one.
+### 3️⃣ **Runtime Generation**
+When a user requests a new post:
+1. **Load** processed example posts from storage
+2. **Filter** examples by selected topic, length, and language
+3. **Select** up to 2 most similar examples
+4. **Build** a few-shot prompt with selected examples
+5. **Send** prompt to Llama 3.3 via Groq API
+6. **Generate** and display the new LinkedIn post
 
-### 2. Clone the repository
+---
 
+## 🏗️ Architecture Overview
+
+```
+┌─────────────────┐
+│  Raw LinkedIn   │
+│     Posts       │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│   Metadata      │
+│   Enrichment    │
+│  (Line count,   │
+│  Language, Tags)│
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│   Processed     │
+│   Dataset       │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────────────────────────┐
+│         User Input (UI)             │
+│  Topic | Length | Language          │
+└────────┬────────────────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Filter & Select│
+│  Similar Posts  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Few-Shot       │
+│  Prompt Builder │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Groq API       │
+│  (Llama 3.3)    │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Generated      │
+│  LinkedIn Post  │
+└─────────────────┘
+```
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| ![Python](https://img.shields.io/badge/-Python-3776AB?style=flat&logo=python&logoColor=white) | Core programming language |
+| ![Streamlit](https://img.shields.io/badge/-Streamlit-FF4B4B?style=flat&logo=streamlit&logoColor=white) | Web UI framework |
+| ![LangChain](https://img.shields.io/badge/-LangChain-121212?style=flat) | LLM orchestration & prompt management |
+| ![Groq](https://img.shields.io/badge/-Groq-000000?style=flat) | High-performance LLM API |
+| **Llama 3.3** | Large language model |
+| **Pandas** | Data processing & filtering |
+
+---
+
+## 📂 Project Structure
+
+```
+Linkedin_post_generator/
+│
+├── main.py                # Streamlit entry point
+├── llm_helper.py          # LLM API handler
+├── post_generator.py      # Post creation logic
+├── preprocess.py          # Data preprocessing
+├── few_shot.py            # Few-shot prompt templates
+├── data/                  # Raw and processed posts
+├── requirements.txt
+└── README.md
+
+
+---
+
+## ⚙️ Installation & Setup
+
+### Prerequisites
+- Python 3.8 or higher
+- pip package manager
+- Groq API account ([Sign up here](https://groq.com))
+
+### Step 1: Clone the Repository
 ```bash
-git clone <repo-url>
-cd "Linkedin post generator"
+git clone https://github.com/anujakhatri/linkedin-post-generator.git
+cd linkedin-post-generator
 ```
 
-### 3. Create and activate a virtual environment
-
+### Step 2: Create Virtual Environment
 ```bash
-python -m venv .venv
-source .venv/bin/activate
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-### 4. Install Python dependencies
-
-Install packages roughly matching what the code imports:
-
+### Step 3: Install Dependencies
 ```bash
-pip install streamlit pandas python-dotenv langchain-core langchain-groq
+pip install -r requirements.txt
 ```
 
-You may also need:
+---
 
+## 🔐 Environment Variables (API Key Setup)
+
+> ⚠️ **IMPORTANT**: Never commit your API keys to GitHub!
+
+### Step 1: Create `.env` File
+Copy the example environment file:
 ```bash
-pip install watchdog
+cp .env.example .env
 ```
 
-if you run into file-watching related issues.
+### Step 2: Add Your Groq API Key
+Open `.env` and add your API key:
+```env
+GROQ_API_KEY=your_groq_api_key_here
+```
 
-### 5. Configure environment variables
+### Step 3: Obtain Groq API Key
+1. Visit [Groq Console](https://console.groq.com)
+2. Sign up or log in
+3. Navigate to API Keys section
+4. Generate a new API key
+5. Copy and paste it into your `.env` file
 
-Create a `.env.save` file in the project root:
+> 💡 **Tip**: The `.env` file is already included in `.gitignore` to prevent accidental commits.
 
+---
+
+## ▶️ Running the Application
+
+### Start the Streamlit App
 ```bash
-echo "GROQ_API_KEY=your_groq_api_key_here" > .env.save
+streamlit run app/main.py
 ```
 
-Replace `your_groq_api_key_here` with your actual Groq API key.
+The application will open in your default browser at `http://localhost:8501`
 
-### 6. Prepare the processed dataset
+### Using the Application
+1. **Select a Topic**: Choose from available categories (e.g., Technology, Marketing, Career)
+2. **Choose Length**: Pick short, medium, or long format
+3. **Select Language**: Choose your preferred language
+4. **Generate**: Click the generate button
+5. **Review**: View your AI-generated LinkedIn post
+6. **Copy & Post**: Copy the content to LinkedIn
 
-If `data/processed_posts.json` is not already present or you want to regenerate it:
+---
 
-```bash
-python preprocess.py
+## 📸 Example Use Case
+
+### Input
+- **Topic**: Artificial Intelligence
+- **Length**: Medium
+- **Language**: English
+
+### Output
+```
+The key? Building systems that are:
+✅ Transparent
+✅ Accountable
+✅ Human-centered
+
+#ArtificialIntelligence #TechInnovation #FutureOfWork
 ```
 
-This will:
+---
 
-- Read **raw posts** from `data/raw_posts.json`.
-- Ask the LLM to extract metadata.
-- Normalize tags and write the result to `data/processed_posts.json`.
+## 📈 Future Improvements
 
-## Usage Examples
+- [ ] **User Authentication**: Allow users to save favorite posts
+- [ ] **Custom Training**: Enable users to upload their own post examples
+- [ ] **Multi-Model Support**: Add support for GPT-4, Claude, and other LLMs
+- [ ] **Analytics Dashboard**: Track generation metrics and popular topics
+- [ ] **Tone Customization**: Add options for professional, casual, or inspirational tones
+- [ ] **Hashtag Suggestions**: Auto-generate relevant hashtags
+- [ ] **Export Options**: Download posts as PDF or share directly to LinkedIn
+- [ ] **A/B Testing**: Compare multiple generated versions
 
-### 1. Run the web app (recommended)
+---
 
-From the project root (with your virtual environment activated):
+## 🤝 Contributing
 
-```bash
-streamlit run main.py
-```
+Contributions are welcome! Here's how you can help:
 
-Then:
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/AmazingFeature`)
+3. **Commit** your changes (`git commit -m 'Add some AmazingFeature'`)
+4. **Push** to the branch (`git push origin feature/AmazingFeature`)
+5. **Open** a Pull Request
 
-1. Open the URL Streamlit prints in your terminal (usually `http://localhost:8501`).
-2. Choose:
-   - **Topic** (tag) from the dropdown.
-   - **Length**: `Short`, `Medium`, or `Long`.
-   - **Language**: `English` or `Neplish`.
-3. Click **Generate**.
-4. A generated LinkedIn post will appear below the button.
+Please ensure your code follows the existing style and includes appropriate tests.
 
-### 2. Use the generator directly from Python
-
-You can also call the generator in your own scripts or notebooks:
-
-```python
-from post_generator import generate_post
-
-post = generate_post(length="Medium", language="English", tag="Job Search")
-print(post)
-```
-
-Make sure your environment is set up (virtualenv active, `GROQ_API_KEY` configured, and `data/processed_posts.json` generated).
-
-### 3. Regenerate the processed dataset
-
-If you update `data/raw_posts.json` with new posts, rerun:
-
-```bash
-python preprocess.py
-```
-
-This will refresh `data/processed_posts.json` with updated metadata and unified tags.
-
-## Technologies / Tech Stack
-
-### Current implementation (this folder)
-
-- **Language**: Python
-- **UI**: Streamlit
-- **LLM Orchestration**: LangChain (`langchain-core`, `langchain_groq`)
-- **Model Provider**: Groq (`llama-3.3-70b-versatile`)
-- **Data Processing**: Pandas + JSON files (`data/raw_posts.json`, `data/processed_posts.json`)
-- **Environment Management**: `python-dotenv` with `.env.save`
-
-### Target full-stack architecture (as described)
-
-The intended broader architecture for this project includes:
-
-- **Frontend**: React.js
-- **Backend**: FastAPI
-- **Database**: PostgreSQL
-- **Styling**: TailwindCSS
-- **Containerization**: Docker
-
-> The current repository primarily contains the Python/Streamlit prototype and data-processing pipeline.  
-> React, FastAPI, PostgreSQL, TailwindCSS, and Docker support can be added around this core to provide a full production-ready system.
-
-## API Endpoints / Integration Notes
-
-### Current state (this folder)
-
-- There is **no separate FastAPI service or public HTTP API** defined in this codebase yet.
-- All functionality is accessed through:
-  - The **Streamlit UI** (`main.py`).
-  - Direct Python function calls (e.g., `generate_post` in `post_generator.py`, `FewShotPosts` in `few_shot.py`).
-
-### Suggested future FastAPI design (high level)
-
-If you later wrap this logic in a FastAPI backend, typical endpoints might include:
-
-- `POST /api/posts/generate`
-  - **Body**: `{ "length": "Short|Medium|Long", "language": "English|Neplish", "tag": "TopicName" }`
-  - **Response**: `{ "post": "Generated LinkedIn post text" }`
-
-- `GET /api/tags`
-  - Returns the list of available tags (using `FewShotPosts.get_tags()`).
-
-These endpoints would internally reuse the same functions and classes already present in `post_generator.py` and `few_shot.py`.
-
-## Contribution Guidelines
-
-- **Discuss major changes first**
-  - If you plan to add a React frontend, FastAPI backend, or Docker setup, consider opening an issue to describe your design.
-
-- **Set up your environment**
-  - Use a virtual environment (`.venv`) and install dependencies as described above.
-  - Ensure `preprocess.py` and `main.py` run without errors before submitting changes.
-
-- **Code style & structure**
-  - Keep functions small and focused.
-  - Prefer reusing existing helpers (`FewShotPosts`, `generate_post`, `llm_helper.llm`) instead of duplicating logic.
-  - Add docstrings or inline comments for non-obvious logic, especially around prompt construction and tag unification.
-
-- **Testing**
-  - Manually test:
-    - Data preprocessing (`python preprocess.py`).
-    - Web app interactions (`streamlit run main.py`).
-  - If you introduce FastAPI or React, add basic tests or at least manual test steps to the README.
-
-- **Pull Requests**
-  - Keep PRs small and focused on a single change or feature.
-  - Describe:
-    - What you changed.
-    - How to test it.
-    - Any new environment variables or setup steps.
-
-## License
-
-No explicit license file is currently included in this repository.  
-Until a license is added (e.g., `LICENSE` with MIT, Apache 2.0, etc.)
+---
 
 
+## 🙏 Acknowledgments
+
+- **Groq** for providing high-performance LLM API
+- **LangChain** for excellent LLM orchestration tools
+- **Streamlit** for the intuitive web framework
+- **Meta AI** for the Llama 3.3 model
+
+---
+
+
+---
+
+<div align="center">
+  
+**⭐ Star this repo if you find it helpful!**
+
+Made with ❤️ by Anuja Khatri
+
+</div>
