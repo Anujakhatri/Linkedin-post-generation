@@ -1,3 +1,11 @@
+# Common Exclusions
+.env
+.env.save
+.venv/
+__pycache__/
+.DS_Store
+**/.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
