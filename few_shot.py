@@ -1,5 +1,11 @@
-import pandas as pd
 import json
+import re
+from typing import Any
+
+import pandas as pd
+
+
+SURROGATE_RE = re.compile(r"[\ud800-\udfff]")
 
 
 class FewShotPosts:
@@ -11,11 +17,21 @@ class FewShotPosts:
     def load_posts(self, file_path):
         with open(file_path, encoding="utf-8") as f:
             posts = json.load(f)
+            posts = self._sanitize_surrogates(posts)
             self.df = pd.json_normalize(posts)
             self.df['length'] = self.df['line_count'].apply(self.categorize_length)
             # collect unique tags
             all_tags = self.df['tags'].apply(lambda x: x).sum()
             self.unique_tags = list(set(all_tags))
+
+    def _sanitize_surrogates(self, value: Any) -> Any:
+        if isinstance(value, str):
+            return SURROGATE_RE.sub('', value)
+        if isinstance(value, list):
+            return [self._sanitize_surrogates(item) for item in value]
+        if isinstance(value, dict):
+            return {key: self._sanitize_surrogates(item) for key, item in value.items()}
+        return value
 
     def get_filtered_posts(self, length, language, tag):
         df_filtered = self.df[

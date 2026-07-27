@@ -1,6 +1,7 @@
 import streamlit as st
 from few_shot import FewShotPosts
 from post_generator import generate_post
+from llm_helper import is_configured
 
 
 # Options for length and language
@@ -30,6 +31,9 @@ def main():
         selected_language = st.selectbox("Language", options=language_options)
 
 
+
+    if not is_configured():
+        st.warning("Groq API is not configured yet. Add a valid GROQ_API_KEY to the .env file and restart the app.")
 
     # Generate Button
     if st.button("Generate"):

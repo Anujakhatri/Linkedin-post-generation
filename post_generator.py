@@ -1,4 +1,4 @@
-from llm_helper import llm
+from llm_helper import llm, is_configured
 from few_shot import FewShotPosts
 
 few_shot = FewShotPosts()
@@ -14,6 +14,9 @@ def get_length_str(length):
 
 
 def generate_post(length, language, tag):
+    if not is_configured():
+        return "Groq API is not configured. Please add a valid GROQ_API_KEY to the .env file and restart the app."
+
     prompt = get_prompt(length, language, tag)
     response = llm.invoke(prompt)
     return response.content
